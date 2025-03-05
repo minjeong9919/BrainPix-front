@@ -207,7 +207,6 @@ BRAINPIX-front
  ┣ 📜routes.tsx
  ┣ 📜seoMetaTag.tsx
  ┗ 📜vite-env.d.ts
-<br>
 ```
 
 
