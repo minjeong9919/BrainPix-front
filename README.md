@@ -45,24 +45,52 @@ VITE_S3_URL=https://brainpix.s3.ap-northeast-2.amazonaws.com
 
 <br/>
 
+## 구현 내용
+[ **전반적인 프로젝트 세팅** ]
+  - GitHub Actions를 활용하여 CI/CD 자동화 
+  - stylint, eslint, prettier을 적용하여 코드의 일관성, 통일성 유지
+  - 특정 색상, 폰트 사이즈를 지정하여 글로벌 변수로 설정
+    
+[ **공통 컴포넌트 구현** ]
+  1. Toast
+     - 토스트 컴포넌트를 타입별로 구현 ( 에러, 성공, 일반 )
+     - 토스트의 상태를 Context API로 관리
+     - 토스트의 사용 로직이 단순해짐
+  2. Image
+     - 이미지 url 에러 상황 및 빈 url 문자열일 경우 처리를 위한 함수 구현
+     - 모든 코드에는 img 태그 대신 Image 컴포넌트를 적용
+  3. 캐러셀
+     - 버튼이 위, 가운데 있을 경우 두 가지 타입을 하나의 컴포넌트로 구현
+     - 재사용성을 높이고, 코드의 중복 감소
+  4. 헤더
+     - 로컬 스토리지를 활용한 최근 검색어 기능 구현
+     - 검색창에 디바운스 적용하여 빈번한 이벤트 발생 제어
+    
+[ **페이지 구현** ]
+  1. 마이페이지 - 메인 (최근 기록, 알림)
+     - intersectionObserverAPI 커스텀 훅을 구현하여 무한 스크롤 구현
+  2. 마이페이지 - 내 정보
+  3. 마이페이지 - 포트폴리오
+  4. 마이페이지 - 메신저
+  5. 로그인/회원가입 페이지
+     - react-hook-form을 이용해 폼데이터를 관리 및 유효성 검사를 적용하여 리렌더링 횟수 감소
+<br/>
+
 ## 기술적 기능 및 최적화
 - 🔀 **CI/CD 자동화 파이프라인 구축**  
-  - GitHub Actions를 활용하여 **CI/CD 자동화**  
-  - **배포 전 코드 lint, stylelint 및 빌드 오류 자동 검출**  
-  - `develop` 브랜치 동기화 시 vercel을 통한 **자동 배포 실행**  
-
+  - GitHub Actions를 활용하여 CI/CD 자동화
+  - 배포 전 코드 lint, stylelint 및 빌드 오류 자동 검출
+  - `develop` 브랜치 동기화 시 vercel을 통한 자동 배포 실행 
 - 🥪 **Context API 기반 토스트 컴포넌트 구현**  
   - 커스텀 토스트 컴포넌트 직접 구현
-  - **Context API**를 활용한 **전역 상태 관리**  
+  - Context API를 활용한 전역 상태 관리
   - 어디서든 쉽게 호출 가능하도록 최적화
- 
 - 🔀 **rollup-plugin-visualizer을 이용한 번들링 최적화 진행**  
-  - **rollup-plugin-visualizer**를 활용하여 번들 사이즈를 시각적으로 확인
-  - react-quill-new 라이브러리의 텍스트 에디터를 컴포넌트화하여 **lazy import 적용**
-  - **초기 빌드 시간 단축 및 번들 크기 감소**
- 
+  - rollup-plugin-visualizer를 활용하여 번들 사이즈를 시각적으로 확인
+  - react-quill-new 라이브러리의 텍스트 에디터를 컴포넌트화하여 lazy import 적용
+  - 초기 빌드 시간 단축 및 번들 크기 감소
 - 🔀 **react-helmet-async를 활용한 SEO 최적화**  
-  - `react-helmet-async`를 사용하여 페이지별로 **제목(title), 설명(description), Open Graph(OG) 메타태그 동적 적용**  
+  - `react-helmet-async`를 사용하여 페이지별로 제목(title), 설명(description), Open Graph(OG) 메타태그 동적 적용 
 
 <br/>
 
@@ -124,27 +152,36 @@ VITE_S3_URL=https://brainpix.s3.ap-northeast-2.amazonaws.com
 
 <br/>
 
-## 채택한 개발 기술과 브랜치 전략
-### React (TypeScript), SCSS
+## 채택한 개발 기술과 선정 이유
+### React (TypeScript)
 - React (TypeScript)
-  - TypeScript를 사용하여 타입 안전성을 확보하고, 코드의 안정성을 높였습니다.
-  - 컴포넌트화를 통해 추후 유지보수와 재사용성을 고려했습니다.
-- SCSS
-  - SCSS는 클래스 이름을 고유하게 부여할 수 있어, 일관된 네이밍 컨벤션을 유지하는 데 필요한 비용을 절약할 수 있어 채택하였습니다.
-   
+  - 사용자와의 상호작용이 많은 프로젝트이기에 react를 선정
+  - TypeScript를 사용하여 타입 안전성을 확보하고, 코드의 안정성 향상
+  - 또한 기업과 개인, 두 개의 비슷하지만 다른 두 개의 데이터 구조의 명확한 구분을 위해 typescript를 선택
+### SCSS(sass)
+  - 추가적인 학습 필요 없이 기존의 css에서 향상된 라이브러리이기에, css 라이브러리 관련 경험이 모두 달랐던 저희 팀원 모두 어렵지 않게 사용할 수 있을 것 같아 선정
+  - scss(sass)의 적용을 선택하여 글로벌 변수 적용을 통해 일관된 스타일 유지 및 유지보수 편의성 증가, 다양한 내장 기능을 통해 가독성 향상 
 ### React Query, Axios
+  - 무한 스크롤을 적용할 상황이 많기 때문에 이를 편하게 구현하고자 선택
+  - 데이터 캐싱을 통해 불필요한 네트워크 요청 수의 감소로 효율성 향상
+  - axios와 React query를 함께 사용함으로써 더욱 간단한 데이터 요청 구조 유지
+### eslint, prettier, stylint
+- 정해진 규칙에 따라 자동적으로 코드 스타일을 정리해 코드의 일관성을 유지
 
-### eslint, prettier
-- 정해진 규칙에 따라 자동적으로 코드 스타일을 정리해 코드의 일관성을 유지하고자 하고 있습니다.
-- 코드 품질 관리는 eslint에, 코드 포맷팅은 prettier에 일임해 사용하고 있습니다.
-- airbnb의 코딩 컨벤션을 참고하고 있습니다.
-- 협업 시 매번 컨벤션을 신경 쓸 필요 없이 빠르게 개발하는 데에 목적에 두었습니다.
+<br/>
 
-### 브랜치 전략
-- Git-flow 전략을 기반으로 main, develop 브랜치를 운용했습니다.
-- main, develop 브랜치로 나누어 개발을 하였습니다.
-  - **main** 브랜치는 배포 단계에서만 사용하는 브랜치입니다.
-  - **develop** 브랜치는 개발 단계에서 git-flow의 master 역할을 하는 브랜치입니다.
+## 간단한 컨벤션 소개
+**[ 코드 컨벤션 ]**
+- type 말고 interface로 통일 (특정한 상황 외)
+- 변수는 camelCase, 상수는 SNAKE_CASE 사용
+- 스타일링 단위는 px, className은 camelCase로 통일
+**[ 깃 컨벤션 ]**
+- fork 떠서 각자 작업 진행
+- 이름
+> 이슈는 **`feat: 기능 추가`** 로 이름 생성 <br/>
+> PR은 **`feat / 기능 추가`** 로 이름 생성 <br/>
+> 커밋 메시지는 **`feat: 기능 추가`** 처럼 작성 <br/>
+> 브랜치 이름은 **`feat/createInput`** 처럼 타입/기능 구성으로 생성, 기능의 경우 camelCase로 작성 <br/>
 
 <br/>
 
